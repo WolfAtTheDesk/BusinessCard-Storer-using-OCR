@@ -12,40 +12,38 @@ Github: https://www.github.com/WolfAtTheDesk/
 import streamlit as st
 from st_on_hover_tabs import on_hover_tabs
 
+from Page import About
 from Page import Extract
 from Page import Edit
-from Page import Upload
+from Page import View
 
 #------------------------------Streamlit Setup----------------------------------#
 st.set_page_config(
                     layout="wide",
                     menu_items={'About' : "[My Github Link!](https://github.com/WolfAtTheDesk)"})
 
-st.markdown('<style>' + open('style.css').read() + '</style>', unsafe_allow_html=True)
+st.markdown('<style>' + open('Backend/style.css').read() + '</style>', unsafe_allow_html=True)
 
 
 with st.sidebar:
-    st.title('Test')
+    st.title(':violet[OCR]')
     tabs = on_hover_tabs(tabName=['About',
                                   'Extract',
                                   'Edit',
-                                  'Upload',
                                   'View'],
                          iconName=['info',
-                                   'browser_updated',
-                                   'analytics',
-                                   'analytics'
+                                   'pageview',
+                                   'edit',
+                                   'preview'
                                    ],
-                         default_choice=0)
+                         default_choice = 0)
 
 #-----------------------------Streamlit Pages-----------------------------------#
 if tabs == 'About':
-    st.write("OMain page")
+    About.page()
 if tabs == 'Extract':
     Extract.page()
 if tabs == 'Edit':
     Edit.page()
-if tabs == 'Upload':
-    Upload.page()
-# if tabs == 'View':
-#     View.page()
+if tabs == 'View':
+    View.page()

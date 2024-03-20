@@ -8,10 +8,10 @@ File Location: OCR/Pages/Extract.py
 import streamlit as st
 from st_on_hover_tabs import on_hover_tabs
 
-import OcrMethods as ocr
-import mongoDB_methods as mongo
 import pandas as pd
+from datetime import datetime
 
+from Backend import OcrMethods as ocr
 
 
 def page():
@@ -25,7 +25,9 @@ def page():
 
     if upload is not None:
         #save the uploaded image into folder OCR/Cards/
-        ocr.save_card(upload)
+        path = []
+        path.append(ocr.save_card(upload))
+
 
         col1,col2 = st.columns(2,gap="large")
         with col1:
@@ -38,7 +40,7 @@ def page():
                 st.set_option('deprecation.showPyplotGlobalUse', False)
 
                 #detected text on image
-                image,words = ocr.ocr_run(upload)
+                image,words = ocr.ocr_run(path[0])
                 st.markdown("## :green[Recognized Data]")
                 st.pyplot(ocr.image_preview(image,words))
 
@@ -48,8 +50,11 @@ def page():
             result.append(r[1])
 
         data = ocr.get_data(result)
-        data.update({"image" : ocr.img_to_pix(upload)})
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        data.update({"image" : path})
+        data.update({"time" : [timestamp]})
 
         df = pd.DataFrame(data)
         st.write(df)
         st.session_state['stored_data'] = data
+        st.markdown("## :green[Data extracted. Move to the edit tab!]")

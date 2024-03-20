@@ -8,10 +8,12 @@ File Location: OCR/Pages/Edit.py
 import streamlit as st
 import pandas as pd
 
+from Backend import db_methods as db
+
 def page():
     data = st.session_state.stored_data
-
-
+    Flag = True
+    st.image(data["image"],width=480)
     with st.form("Edit the data"):
         col1,col2,col3,col4 = st.columns([1,1,1,1],gap='large')
 
@@ -37,7 +39,13 @@ def page():
             data["Website"][0]     = Website
             data["Address"][0]     = Address
             data["Other"][0]       = Other
+            data["time"][0]        = data["time"][0]
+
             df = pd.DataFrame(data)
             st.session_state.stored_data = data
+            Flag = False
+            st.write("Data Updated, You can now upload Upload Tab")
 
-    st.write("Data Updated, Please move to the Upload Tab")
+    st.table(pd.DataFrame(data))
+    if st.button("Upload to DB",disabled=Flag):
+        db.insert_into_pdb(data)
