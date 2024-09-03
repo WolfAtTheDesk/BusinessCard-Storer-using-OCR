@@ -60,7 +60,6 @@ This user-friendly application extracts key details from business card images, e
 * Streamlit: Python framework for creating web UIs.
 * EasyOCR: Open-source library for text extraction from images.
 * Pillow (PIL Fork): Python Imaging Library for image processing.
-* (Other technologies used in your project)
 
 
 ## Contributing
